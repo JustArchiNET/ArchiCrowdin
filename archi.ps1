@@ -81,7 +81,19 @@ function Git-Commit {
 	}
 }
 
-Push-Location "$PSScriptRoot"
+function Target-Execute {
+	if ($Upload) {
+		Crowdin-Upload
+	}
+
+	if ($Download) {
+		Crowdin-Download
+	}
+
+	if ($Commit) {
+		Git-Commit
+	}
+}
 
 function Verify-Crowdin-Structure {
 	if (!(Test-Path "$crowdinConfigFileName" -PathType Leaf)) {
@@ -97,19 +109,7 @@ function Verify-Crowdin-Structure {
 	}
 }
 
-function Execute-Target {
-	if ($Upload) {
-		Crowdin-Upload
-	}
-
-	if ($Download) {
-		Crowdin-Download
-	}
-
-	if ($Commit) {
-		Git-Commit
-	}
-}
+Push-Location "$PSScriptRoot"
 
 try {
 	for ($i = 0; ($i -lt 3) -and (!(Test-Path "$crowdinConfigFileName" -PathType Leaf)); $i++) {
@@ -121,7 +121,7 @@ try {
 			Push-Location "$target"
 
 			try {
-				Execute-Target
+				Target-Execute
 			} finally {
 				Pop-Location
 			}
