@@ -1,4 +1,4 @@
-# ArchiCrowdinCLI
+# ArchiCrowdin
 
 This tool is used as a submodule in our crowdin-powered projects that allows easier strings upload for automation purposes, especially in CI environments.
 
@@ -16,7 +16,7 @@ The tool will prefer to use your local installation of `crowdin`. If that is not
 
 ## Setup
 
-ArchiCrowdinCLI should be included as a submodule in your local GitHub repo, either in its root, or up to two directories inside. Example command to achieve that would be `git submodule add https://github.com/JustArchiNET/ArchiCrowdinCLI.git tools\ArchiCrowdinCLI`. If you're not using `git`, you can also just include it as part of your project in appropriate subdirectory.
+ArchiCrowdin should be included as a submodule in your local GitHub repo, either in its root, or up to two directories inside. Example command to achieve that would be `git submodule add https://github.com/JustArchiNET/ArchiCrowdin.git tools\ArchiCrowdin`. If you're not using `git`, you can also just include it as part of your project in appropriate subdirectory.
 
 Your project **must** include valid `crowdin.yml` in its root directory. This file specifies all input strings and output translations. If you're already using any sort of crowdin integration in your project, most likely you're already meeting this point, otherwise, read **[configuration file](https://support.crowdin.com/configuration-file)** and create proper file.
 
