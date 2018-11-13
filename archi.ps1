@@ -31,16 +31,10 @@ function Crowdin-Download($commit) {
 function Crowdin-Execute($command) {
 	if (Get-Command 'crowdin' -ErrorAction SilentlyContinue) {
 		& crowdin -b "$branch" --identity "$crowdinIdentityPath" $command
-
-		if ($LastExitCode -ne 0) {
-			throw "Last command failed."
-		}
+		Throw-On-Error
 	} elseif ((Test-Path "$crowdinJarPath" -PathType Leaf) -and (Get-Command 'java' -ErrorAction SilentlyContinue)) {
 		& java -jar "$crowdinJarPath" -b "$branch" --identity "$crowdinIdentityPath" $command
-
-		if ($LastExitCode -ne 0) {
-			throw "Last command failed."
-		}
+		Throw-On-Error
 	} else {
 		throw "Could not find crowdin executable!"
 	}
@@ -53,32 +47,20 @@ function Crowdin-Upload {
 
 function Git-Commit {
 	git reset
-
-	if ($LastExitCode -ne 0) {
-		throw "Last command failed."
-	}
+	Throw-On-Error
 
 	git add -A .
-
-	if ($LastExitCode -ne 0) {
-		throw "Last command failed."
-	}
+	Throw-On-Error
 
 	git diff-index --quiet HEAD
 
 	if ($LastExitCode -ne 0) {
 		git commit -m "Translations update"
-
-		if ($LastExitCode -ne 0) {
-			throw "Last command failed."
-		}
+		Throw-On-Error
 	}
 
 	git push origin "$branch" --recurse-submodules=on-demand
-
-	if ($LastExitCode -ne 0) {
-		throw "Last command failed."
-	}
+	Throw-On-Error
 }
 
 function Target-Execute {
@@ -92,6 +74,12 @@ function Target-Execute {
 
 	if ($Commit) {
 		Git-Commit
+	}
+}
+
+function Throw-On-Error {
+	if ($LastExitCode -ne 0) {
+		throw "Last command failed."
 	}
 }
 
@@ -126,7 +114,7 @@ try {
 				Pop-Location
 			}
 		} else {
-			Execute-Target
+			Target-Execute
 		}
 	}
 } finally {
