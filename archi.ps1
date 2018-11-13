@@ -112,7 +112,7 @@ function Execute-Target {
 }
 
 try {
-	for ($i = 0; ($i -lt 2) -and (!(Test-Path "$crowdinConfigFileName" -PathType Leaf)); $i++) {
+	for ($i = 0; ($i -lt 3) -and (!(Test-Path "$crowdinConfigFileName" -PathType Leaf)); $i++) {
 		Set-Location ..
 	}
 
