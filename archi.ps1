@@ -8,6 +8,9 @@ Param(
 	[Alias("c")]
 	[switch] $Commit,
 
+	[Alias("p")]
+	[switch] $Pull,
+
 	[Alias("t")]
 	[string[]] $Targets = 'this'
 )
@@ -24,6 +27,10 @@ $crowdinIdentityPath = "$crowdinIdentityDefaultPath"
 $crowdinJarPath = "$PSScriptRoot\remote\crowdin-cli.jar"
 
 function Crowdin-Download($commit) {
+	if ($Pull) {
+		Git-Pull
+	}
+
 	Verify-Crowdin-Structure
 	Crowdin-Execute 'download'
 }
@@ -41,11 +48,19 @@ function Crowdin-Execute($command) {
 }
 
 function Crowdin-Upload {
+	if ($Pull) {
+		Git-Pull
+	}
+
 	Verify-Crowdin-Structure
 	Crowdin-Execute 'upload sources'
 }
 
 function Git-Commit {
+	if ($Pull) {
+		Git-Pull
+	}
+
 	git reset
 	Throw-On-Error
 
@@ -60,6 +75,11 @@ function Git-Commit {
 	}
 
 	git push origin "$branch" --recurse-submodules=on-demand
+	Throw-On-Error
+}
+
+function Git-Pull {
+	git pull origin "$branch"
 	Throw-On-Error
 }
 
@@ -102,6 +122,10 @@ Push-Location "$PSScriptRoot"
 try {
 	for ($i = 0; ($i -lt 3) -and (!(Test-Path "$crowdinConfigFileName" -PathType Leaf)); $i++) {
 		Set-Location ..
+	}
+
+	if (!(Test-Path "$crowdinConfigFileName" -PathType Leaf)) {
+		throw "$crowdinConfigFileName could not be found, aborting."
 	}
 
 	foreach ($target in $Targets) {

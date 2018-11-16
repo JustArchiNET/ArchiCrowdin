@@ -40,25 +40,32 @@ As a low-level tool, you should use `archi.ps1` script. It supports following ar
 - `-upload` will push strings to Crowdin platform. This is equivalent to `crowdin upload sources`.
 - `-download` will pull translations from Crowdin platform. This is equivalent to `crowdin download`.
 - `-commit` will uncheck the files, commit the changes and push them to git repo. This is equivalent of `git reset`, `git add`, `git commit` and `git push`. This action is potentially dangerous and should be used only on clean repos, as `commit` will typically include all modified files.
+- `-pull` will ensure that tree is up-to-date before `upload`, `download` and `commit` actions. This is equivalent of `git pull` done before each of those commands. Typically you want to use this during development, but not CI.
 
 Each parameter includes its own short alias that can be used instead of full name. The alias right now is always equal to the first letter.
 
-`upload`, `download` and `commit` can all be specified at the same time. The tool will proceed in order of upload -> download -> commit.
+`upload`, `download` and `commit` can all be specified at the same time. The tool will proceed in order of upload -> download -> commit (optionally with pulling before each step, if specified).
+
+Git-based arguments such as `commit` or `pull` require from you to have `git` command available and specified `targets` as git projects.
 
 ### Examples
 
 ```powershell
 # The most common and expected usage, pushes strings to crowdin from this repo, defaults to -t:this
+# This is what you want to use within your CI
 & archi.ps1 -u
 
-# If your project includes submodules with their own crowdin.yml definitions, you can specify multiple repos at once, do not forget about the root (`this`) repo (if wanted)
+# Alternative version for projects with submodules that include their own crowdin.yml definitions
+# This should be used mainly for development, not CIs, as each project should have its own CI process
 & archi.ps1 -t:path\to\submodule,this -u
 
-# You can use multiple actions at once, they'll be executed one after another
+# Sometimes you might want to execute multiple actions at once, especially for syncing the tree (upload + download)
+# You can do so by declaring multiple arguments, they'll be executed one after another in fixed order specified in usage
 & archi.ps1 -u -d
 
-# Upload, download and commit, for one of our submodules and the root project itself
-& archi.ps1 -u -d -c -t:wiki,this
+# A complete development example that will do everything that is expected from crowdin integration
+# This will upload, download and commit (with pulling first), for one of our submodules and the root project itself
+& archi.ps1 -u -d -c -p -t:wiki,this
 ```
 
 ---
