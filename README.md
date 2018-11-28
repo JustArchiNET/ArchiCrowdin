@@ -7,7 +7,7 @@ This tool is used as a submodule in our crowdin-powered projects that allows eas
 ## Requirements
 
 - **[Powershell Core](https://github.com/PowerShell/PowerShell)** (standard Powershell will also work)
-- **[Java 7+](https://www.oracle.com/technetwork/java/javase/downloads/index.html)** (we suggest latest release)
+- **[Java 7+](https://www.oracle.com/technetwork/java/javase/downloads/index.html)** (we suggest latest release, just JRE is enough)
 - **[Crowdin CLI](https://support.crowdin.com/cli-tool/#installation)** (optional)
 
 The tool will prefer to use your local installation of `crowdin`. If that is not possible, it'll use our own bundled version of **[Crowdin CLI](https://support.crowdin.com/cli-tool)** with its source located **[on GitHub](https://github.com/crowdin/crowdin-cli-2)**. We'll try to update our version on usual basis in order to match **[the latest version](https://downloads.crowdin.com/cli/v2/crowdin-cli.zip)** released by Crowdin.
