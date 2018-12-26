@@ -79,7 +79,7 @@ function Git-Commit {
 }
 
 function Git-Pull {
-	git pull origin "$branch"
+	git pull origin "$branch" --recurse-submodules=on-demand
 	Throw-On-Error
 }
 
