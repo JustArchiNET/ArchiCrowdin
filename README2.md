@@ -36,17 +36,19 @@ Another supported, and this time **recommended** setup is to create `crowdin_ide
 
 As a low-level tool, you should use `archi.ps1` script. It supports following arguments:
 
-- `-targets:{repos}` specifies target repos to perform actions on (separated by a comma). This argument is optional and defaults to `this` which targets the root project. You want to use this parameter if your project includes submodules that have their own `crowdin.yml` definitions. The order matters, so typically you'll want `this` repo to be your last.
-- `-upload` will push strings to Crowdin platform. This is equivalent to `crowdin upload sources`.
-- `-download` will pull translations from Crowdin platform. This is equivalent to `crowdin download`.
-- `-commit` will uncheck the files, commit the changes and push them to git repo. This is equivalent of `git reset`, `git add`, `git commit` and `git push`. This action is potentially dangerous and should be used only on clean repos, as `commit` will typically include all modified files.
-- `-pull` will ensure that tree is up-to-date before `upload`, `download` and `commit` actions. This is equivalent of `git checkout` followed by `git pull` done before each of those commands. Typically you want to use this during development, but not CI.
+- `-Upload` will push strings to Crowdin platform. This is equivalent to `crowdin upload sources`.
+- `-Download` will pull translations from Crowdin platform. This is equivalent to `crowdin download`.
+- `-Commit` will uncheck the files, commit the changes and push them to git repo. This is equivalent of `git reset`, `git add`, `git commit` and `git push`. This action is potentially dangerous and should be used only on clean repos, as `commit` will typically include all modified files.
+- `-Pull` will ensure that tree is up-to-date before `upload`, `download` and `commit` actions. This is equivalent of `git checkout` followed by `git pull` done before each of those commands. Typically you want to use this during development, but not CI.
 
-Each parameter includes its own short alias that can be used instead of full name. The alias right now is always equal to the first letter.
+- `-Targets:{repos}` specifies target repos to perform actions on (separated by a comma). This argument is optional and defaults to `this` which targets the root project. You want to use this parameter if your project includes submodules that have their own `crowdin.yml` definitions. The order matters, so typically you'll want `this` repo to be your last.
+- `-RecurseSubmodules` defines `--recurse-submodules` behaviour of `git` command when pushing or pulling. This argument is optional and defaults to `on-demand`. Check git manual for further explanation and available options.
 
-`upload`, `download` and `commit` can all be specified at the same time. The tool will proceed in order of upload -> download -> commit (optionally with pulling before each step, if specified).
+Each parameter includes its own short alias that can be used instead of full name. The alias is made out of capital letters (e.g. `-u` for `-Upload`).
 
-Git-based arguments such as `commit` or `pull` require from you to have `git` command available and specified `targets` as git projects.
+`Upload`, `Download` and `Commit` can all be specified at the same time. The tool will proceed in order of upload -> download -> commit (optionally with pulling before each step, if specified).
+
+Git-based arguments such as `Commit` or `Pull` require from you to have `git` command available and specified `Targets` as git projects.
 
 ### Examples
 
@@ -65,7 +67,8 @@ Git-based arguments such as `commit` or `pull` require from you to have `git` co
 
 # A complete development example that will do everything that is expected from crowdin integration
 # This will upload, download and commit (with pulling first), for one of our submodules and the root project itself
-& archi.ps1 -u -d -c -p -t:wiki,this
+# Since we also want to include new reference of our wiki submodule in the main project, we specified -rs:no which will avoid resetting it after being done with the wiki
+& archi.ps1 -u -d -c -p -t:wiki,this -rs:no
 ```
 
 ---

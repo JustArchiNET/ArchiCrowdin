@@ -12,7 +12,10 @@ Param(
 	[switch] $Pull,
 
 	[Alias("t")]
-	[string[]] $Targets = 'this'
+	[string[]] $Targets = 'this',
+
+	[Alias("rs")]
+	[string] $RecurseSubmodules = 'on-demand'
 )
 
 Set-StrictMode -Version Latest
@@ -77,7 +80,7 @@ function Git-Commit {
 		Throw-On-Error
 	}
 
-	git push origin "$branch" --recurse-submodules=on-demand
+	git push origin "$branch" "--recurse-submodules=$RecurseSubmodules"
 	Throw-On-Error
 }
 
@@ -85,7 +88,7 @@ function Git-Pull {
 	git checkout "$branch"
 	Throw-On-Error
 
-	git pull origin "$branch" --recurse-submodules=on-demand
+	git pull origin "$branch" "--recurse-submodules=$RecurseSubmodules"
 	Throw-On-Error
 }
 
