@@ -40,7 +40,7 @@ As a low-level tool, you should use `archi.ps1` script. It supports following ar
 - `-upload` will push strings to Crowdin platform. This is equivalent to `crowdin upload sources`.
 - `-download` will pull translations from Crowdin platform. This is equivalent to `crowdin download`.
 - `-commit` will uncheck the files, commit the changes and push them to git repo. This is equivalent of `git reset`, `git add`, `git commit` and `git push`. This action is potentially dangerous and should be used only on clean repos, as `commit` will typically include all modified files.
-- `-pull` will ensure that tree is up-to-date before `upload`, `download` and `commit` actions. This is equivalent of `git checkout` followed by `git pull` done before each of those commands. Typically you want to use this during development, but not CI.
+- `-pull` will ensure that tree is up-to-date before `upload`, `download` and `commit` actions. This is equivalent of `git checkout` (except in `commit`), followed by `git pull` done before each of those commands. Typically you want to use this during development, but not CI.
 
 Each parameter includes its own short alias that can be used instead of full name. The alias right now is always equal to the first letter.
 

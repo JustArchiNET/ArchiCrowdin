@@ -28,7 +28,7 @@ $crowdinJarPath = "$PSScriptRoot\remote\crowdin-cli.jar"
 
 function Crowdin-Download($commit) {
 	if ($Pull) {
-		Git-Pull
+		Git-Checkout-Pull
 	}
 
 	Verify-Crowdin-Structure
@@ -49,11 +49,18 @@ function Crowdin-Execute($command) {
 
 function Crowdin-Upload {
 	if ($Pull) {
-		Git-Pull
+		Git-Checkout-Pull
 	}
 
 	Verify-Crowdin-Structure
 	Crowdin-Execute 'upload sources'
+}
+
+function Git-Checkout-Pull {
+	git checkout -f "$branch"
+	Throw-On-Error
+
+	Git-Pull
 }
 
 function Git-Commit {
@@ -79,9 +86,6 @@ function Git-Commit {
 }
 
 function Git-Pull {
-	git checkout -f "$branch"
-	Throw-On-Error
-
 	git pull origin "$branch" --recurse-submodules=on-demand
 	Throw-On-Error
 }
