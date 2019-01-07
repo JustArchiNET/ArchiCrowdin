@@ -79,6 +79,9 @@ function Git-Commit {
 }
 
 function Git-Pull {
+	git checkout -f "$branch"
+	Throw-On-Error
+
 	git pull origin "$branch" --recurse-submodules=on-demand
 	Throw-On-Error
 }
