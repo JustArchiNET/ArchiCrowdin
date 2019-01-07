@@ -28,7 +28,7 @@ $crowdinJarPath = "$PSScriptRoot\remote\crowdin-cli.jar"
 
 function Crowdin-Download($commit) {
 	if ($Pull) {
-		Git-Checkout-Pull
+		Git-Pull
 	}
 
 	Verify-Crowdin-Structure
@@ -49,18 +49,11 @@ function Crowdin-Execute($command) {
 
 function Crowdin-Upload {
 	if ($Pull) {
-		Git-Checkout-Pull
+		Git-Pull
 	}
 
 	Verify-Crowdin-Structure
 	Crowdin-Execute 'upload sources'
-}
-
-function Git-Checkout-Pull {
-	git checkout -f "$branch"
-	Throw-On-Error
-
-	Git-Pull
 }
 
 function Git-Commit {
@@ -74,6 +67,9 @@ function Git-Commit {
 	git add -A .
 	Throw-On-Error
 
+	# Git commit will fail if there are no changes to commit
+	# Therefore, we'll call diff-index first and commit only if there are changes to be done
+	# This way we can properly catch potential git commit errors
 	git diff-index --quiet HEAD
 
 	if ($LastExitCode -ne 0) {
@@ -86,6 +82,9 @@ function Git-Commit {
 }
 
 function Git-Pull {
+	git checkout "$branch"
+	Throw-On-Error
+
 	git pull origin "$branch" --recurse-submodules=on-demand
 	Throw-On-Error
 }
