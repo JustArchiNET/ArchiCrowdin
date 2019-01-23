@@ -12,6 +12,8 @@ This tool is used as a submodule in our crowdin-powered projects that allows eas
 
 The tool will prefer to use your local installation of `crowdin`. If that is not possible, it'll use our own bundled version of **[Crowdin CLI](https://support.crowdin.com/cli-tool)** with its source located **[on GitHub](https://github.com/crowdin/crowdin-cli-2)**. We'll try to update our version on usual basis in order to match **[the latest version](https://downloads.crowdin.com/cli/v2/crowdin-cli.zip)** released by Crowdin.
 
+If you're not using Crowdin CLI or otherwise have `crowdin` command unavailable in your environment, ensure that `java` command is recognized. This should be the case on Linux/OS X by default, but on Windows you might need to **[add java to your path](https://www.java.com/en/download/help/path.xml)** in order to achieve that. `java -version` command must work properly in the environment that is supposed to work with our tool.
+
 ---
 
 ## Setup
