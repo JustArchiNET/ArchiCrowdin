@@ -1,6 +1,14 @@
 # ArchiCrowdin
 
+---
+
 This tool is used as a submodule in our crowdin-powered projects that allows easier strings upload for automation purposes, especially in CI environments.
+
+---
+
+## Deprecation notice
+
+This tool has been archived and no further work is planned on it. We've switched to **[Crowdin GitHub actions](https://github.com/crowdin/github-action)** which fulfill ArchiCrowdin use cases through, which themselves are fairly more elegant and vastly superior to the solution that ArchiCrowdin offers. If you're currently considering/using ArchiCrowdin, we recommend you to base your solution on Crowdin GitHub actions as well.
 
 ---
 
